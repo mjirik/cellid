@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'easy_thumbnails',
+    'filer',
+    'mptt',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
