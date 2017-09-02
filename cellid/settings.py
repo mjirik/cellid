@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'filer',
     'mptt',
     'polls.apps.PollsConfig',
+    'hokus.apps.HokusConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
