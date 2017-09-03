@@ -12,6 +12,6 @@ def index(request):
               # latest_question_list
     context = {'pth': fn,
                "range110": list(range(1, 10))}
-    return render(request, 'hokus/index.html', context)
+    return render(request, 'imviewer/index.html', context)
 
 
