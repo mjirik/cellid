@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+<html>
+
+<head>
+</head>
+<body>
+{% block body %}
+    <h2>Home</h2>
+    <div>
+        <ul>
+            {% for i in range110 %}
+            <li>{{i}}</li>
+            {% endfor %}
+        </ul>
+        {{ pth }}
+
+    </div>
+
+{% endblock %}
+
+</body>
+
+</html>

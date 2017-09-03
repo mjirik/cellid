@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from imviewer import views
 
 urlpatterns = [
+    url(r'^$', views.login_redirect, name='login_redirect'),
     url(r'^polls/', include('polls.urls')),
     url(r'^filer/', include('filer.urls')),
     url(r'^imviewer/', include('imviewer.urls')),
