@@ -1,6 +1,8 @@
 from django import forms
+from .models import ImageQuatro
 
 
-class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
-    file = forms.FileField()
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = ImageQuatro
+        fields = ('description', 'multicell_fitc', "multicell_dapi", "singlecell_fitc", "singlecell_dapi", )

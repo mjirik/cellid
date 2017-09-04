@@ -31,3 +31,12 @@ def create_profile(sender, **kwargs):
         user_profile = UserProfile.objects.create(user=kwargs['instance'])
 
 post_save.connect(create_profile, sender=User)
+
+
+class ImageQuatro(models.Model):
+    description = models.CharField(max_length=255, blank=True)
+    multicell_dapi = models.FileField(upload_to='documents/')
+    multicell_fitc = models.FileField(upload_to='documents/')
+    singlecell_dapi = models.FileField(upload_to='documents/')
+    singlecell_fitc = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)

@@ -3,7 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
 # Imaginary function to handle an uploaded file.
-from imageprocessing import handle_uploaded_file
+# from .imageprocessing import handle_uploaded_file
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from .forms import DocumentForm
 
 import os.path as op
 # Create your views here.
@@ -48,17 +51,15 @@ def register(request):
         args = {'form': form}
         return render(request, 'imviewer/reg_form.html', args)
 
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from .forms import UploadFileForm
 
-
-def upload_file(request):
+def model_form_upload(request):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
+        form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return HttpResponseRedirect('/success/url/')
+            form.save()
+            return redirect('imviewer/home/')
     else:
-        form = UploadFileForm()
-    return render(request, 'upload.html', {'form': form})
+        form = DocumentForm()
+    return render(request, 'imviewer/model_form_upload.html', {
+        'form': form
+    })

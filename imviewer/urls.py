@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^home/', login, {"template_name": "imviewer/login.html"}),
     url(r'^login/', login, {"template_name": "imviewer/login.html"}),
     url(r'^logout/', logout, {"template_name": "imviewer/logout.html"}),
+    url(r'^upload/', views.model_form_upload, name="model_form_upload"),
     url(r'^register/$', views.register, name='register')
 ]
