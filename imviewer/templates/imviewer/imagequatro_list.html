@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Image List</h1>
+    <ul>
+        <li>
+            <a href="{% url 'imviewer:model_form_upload' %}">Upload new data</a>
+        </li>
+    </ul>
+    <br>
+
+    Ahoje
+    {% if imagequatro_list %}
+    <ul>
+
+      {% for imagequatro in imagequatro_list %}
+        ve foru
+      <li>
+          <a href="{{ imagequatro.get_absolute_url }}">{{ imagequatro.multicell_dapi.name }}</a>
+          <small>(Uploaded at: {{ imagequatro.uploaded_at }})</small>
+
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no books in the library.</p>
+    {% endif %}
+{% endblock %}

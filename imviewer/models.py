@@ -8,6 +8,7 @@ from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.urls import reverse
 
 class Company(models.Model):
     name = models.CharField(max_length=255)
@@ -55,4 +56,20 @@ class ImageQuatro(models.Model):
     # outputdir2  = models.FilePathField(path="/home/mjirik/", default="/home/mjirik/", recursive=True, allow_folders=True)
     # print(outputdir.path)
     # print(outputdir.default)
+
+    def __str__(self):
+        return self.description
+
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular book instance.
+        """
+        print("models get_absolute_url()")
+        print(self.id)
+        return reverse('imviewer:image-detail', args=[str(self.id)])
+
+    # def get_absolute_url(self):
+    #     from django.urls import reverse
+    #     return reverse('people.views.details', args=[str(self.id)])
     

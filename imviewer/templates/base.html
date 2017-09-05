@@ -36,8 +36,12 @@
             </div><!--/.container-fluid -->
           </nav>
         </div>
-        {% block body %}
-        {% endblock %}
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>

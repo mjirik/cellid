@@ -59,8 +59,7 @@ def model_form_upload(request):
         if form.is_valid():
             form.save()
             from . import imageprocessing
-            imageprocessing.quatrofile_processing()
-            form.instance
+            # imageprocessing.quatrofile_processing()
             return redirect('imviewer/home/')
     else:
         form = ImageQuatroForm()
@@ -68,9 +67,20 @@ def model_form_upload(request):
         'form': form
     })
 
+
+from django.views import generic
+
+class ImageQuatroListView(generic.ListView):
+    model = ImageQuatro
+
+class ImageQuatroDetailView(generic.DetailView):
+    model = ImageQuatro
+
 def home(request):
     documents = ImageQuatro.objects.all()
+
     print("home page render")
     print(dir(documents))
+    print(documents[0])
     return render(request, 'imviewer/home.html', {'documents': documents})
     pass

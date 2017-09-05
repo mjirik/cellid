@@ -18,7 +18,7 @@ import os.path as op
 import io3d
 #import imtools
 #import imtools.qmisc
-import cv2 as cv
+#import cv2 as cv
 
 def handle_uploaded_file(files):
     pass
@@ -138,7 +138,9 @@ def imageFusion(imageDapi, imageFitc):
 
 
 def printLabelsOnImage(bBoxes, image, numObjects):
+    import cv2 as cv
     labeledImage = np.array(image)
+
     for i in range(0, numObjects):
         upLimit = int(bBoxes[i][0].start)
         if upLimit < 50: upLimit = 50
