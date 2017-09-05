@@ -87,7 +87,7 @@ def makeDirTree(path):
     if not os.path.exists(op.join(path, 'serazeno')):
         if not os.path.exists(path):
             os.makedirs(path)
-        os.makedirs(op.join(path, '\\serazeno'))
+        os.makedirs(op.join(path, 'serazeno'))
 
 
 def load3DData(path):
@@ -97,11 +97,11 @@ def load3DData(path):
 def flatten(image3D):
     N, w, h = image3D.shape
     maxIm = np.zeros((w, h), np.float)
-    for i in range(1, (image3D.shape[0] - 10) / 12 - 1):
+    for i in range(1, round((image3D.shape[0] - 10) / 12 - 1)):
         averageIm = image3D[i * 12]
         for j in range(1, 12):
             averageIm += image3D[i * 12 + j]
-        averageIm /= 12
+        averageIm = averageIm / 12
         maxIm = np.maximum(maxIm, averageIm).astype(np.int)
     return maxIm
 
@@ -190,6 +190,8 @@ def maskMultiple(allFitcFlat, allSplitMasksList, allBBoxList, numObjects):
 def getObjectCharacteristics(mask, maskedFlatFitcObject):
     dlouhaList = [None] * 360
     kratkaList = [None] * 360
+    dlouhaList = [0] * 360
+    kratkaList = [0] * 360
     for alpha20 in range(0, 17):
         rot = ndimage.interpolation.rotate(mask, alpha20 * 20)
         rotLabel, tmp = ndimage.label(rot)
