@@ -13,6 +13,7 @@ from skimage.color import label2rgb
 from skimage import io
 import scipy.misc as scm
 from scipy import ndimage
+import os.path as op
 
 import io3d
 #import imtools
@@ -33,12 +34,14 @@ p5 = "C:\\Users\\Jan\\Desktop\\bunkoteckyVystup_3_9"
 #p3 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\k_nalezeni\\71_w1sc-DAPI.stk.tif"
 #p4 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\k_nalezeni\\71_w2sc-FITC.stk.tif"
 #p5 = "C:\\Users\\Jan\\Desktop\\bunkoteckyVystup_sw620_stack1_s3_7"
-def quatrofile_processing(p1, p2, p3, p4, p5):
-    outPath = p5
+
+
+def quatrofile_processing(multicell_dapi, multicell_fitc, singlecell_dapi, singlecell_fitc, outputpath):
+    outPath = outputpath
     makeDirTree(outPath)
 
-    allDapi3D = load3DData(p1)
-    allFict3D = load3DData(p2)
+    allDapi3D = load3DData(multicell_dapi)
+    allFict3D = load3DData(multicell_fitc)
     allDapiFlat = flatten(allDapi3D)
     allFitcFlat = flatten(allFict3D)
     allDapiTreshold = treshold(allDapiFlat, 180)
@@ -47,13 +50,13 @@ def quatrofile_processing(p1, p2, p3, p4, p5):
 
     allFusion = imageFusion(allDapiFlat, allFitcFlat)
     allFusionLabels = printLabelsOnImage(allBBoxList, allFusion, allNumObjects)
-    scm.imsave(outPath + '\\Popisky.png', allFusionLabels)
+    scm.imsave(op.join(outPath, 'Popisky.png'), allFusionLabels)
 
     allSplitMasksList = splitMasks(allLabels, allBBoxList, allNumObjects)
     allSplitFusionList = splitObjects(allFusion, allBBoxList, allNumObjects)
 
-    bDapi3D = load3DData(p3)
-    bFict3D = load3DData(p4)
+    bDapi3D = load3DData(singlecell_dapi)
+    bFict3D = load3DData(singlecell_fitc)
     bDapi3DFiltered = horizontalFilter(bDapi3D)
     bDapiFlat = flatten(bDapi3DFiltered)
     bFitcFlat = flatten(bFict3D)
@@ -63,7 +66,7 @@ def quatrofile_processing(p1, p2, p3, p4, p5):
     bLargestObjectIndex = getLargestObjectIndex(bBBoxList)
     bBBox = bBBoxList[bLargestObjectIndex]
     bFusion = imageFusion(crop(bDapiFlat, bBBox), crop(bFitcFlat, bBBox))
-    scm.imsave(outPath + '\\hledana.png', bFusion)
+    scm.imsave(op.join(outPath, 'hledana.png'), bFusion)
 
     bSplitMasksList = splitMasks(bLabels, bBBoxList, bNumObjects)
     bMask = bSplitMasksList[bLargestObjectIndex]
@@ -77,14 +80,14 @@ def quatrofile_processing(p1, p2, p3, p4, p5):
     orderedObjects = orderBasedOnCharacteristics(allSplitFusionList, allObjectsCharacteristicsTable, bCharasteristics,
                                                  bIsRound, allNumObjects)
     for i in range(0, allNumObjects):
-        scm.imsave(outPath + '\\serazeno\\' + str(i) + '_' + str(orderedObjects[i, 1]) + '.png', orderedObjects[i, 0])
+        scm.imsave(op.join(outPath, 'serazeno',  str(i) + '_' + str(orderedObjects[i, 1]) + '.png'), orderedObjects[i, 0])
 
 
 def makeDirTree(path):
-    if not os.path.exists(path + '\\serazeno'):
+    if not os.path.exists(op.join(path, 'serazeno')):
         if not os.path.exists(path):
             os.makedirs(path)
-        os.makedirs(path + '\\serazeno')
+        os.makedirs(op.join(path, '\\serazeno'))
 
 
 def load3DData(path):

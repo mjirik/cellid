@@ -32,11 +32,27 @@ def create_profile(sender, **kwargs):
 
 post_save.connect(create_profile, sender=User)
 
+def get_output_dir():
+# 
+    import datetime
+    OUTPUT_DIRECTORY_PATH = "~/cellid_data"
+    import os.path as op
+    filename = op.join(op.expanduser(OUTPUT_DIRECTORY_PATH), datetime.datetime.now().strftime("%Y%m%d-%H%M%S.%f"))
+#     print ("getnow")
+#     print (filename)
+    return filename
 
 class ImageQuatro(models.Model):
+    # from ..cellid import settings
+    
     description = models.CharField(max_length=255, blank=True)
     multicell_dapi = models.FileField(upload_to='documents/')
     multicell_fitc = models.FileField(upload_to='documents/')
     singlecell_dapi = models.FileField(upload_to='documents/')
     singlecell_fitc = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    outputdir = models.CharField(max_length=255, blank=True, default=get_output_dir)
+    # outputdir2  = models.FilePathField(path="/home/mjirik/", default="/home/mjirik/", recursive=True, allow_folders=True)
+    # print(outputdir.path)
+    # print(outputdir.default)
+    

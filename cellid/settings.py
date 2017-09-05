@@ -125,3 +125,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = "/imviewer/"
+
+OUTPUT_DIRECTORY_PATH = "~/cellid_data/"

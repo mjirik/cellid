@@ -58,6 +58,9 @@ def model_form_upload(request):
         form = ImageQuatroForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            from . import imageprocessing
+            imageprocessing.quatrofile_processing()
+            form.instance
             return redirect('imviewer/home/')
     else:
         form = ImageQuatroForm()
