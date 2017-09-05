@@ -1,24 +1,19 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-<html>
+{% block body%}
+<ul>
+    <li>
+        {# <a href="{% url 'model_form_upload' %}">Model Form Upload</--a> #}
+    </li>
+</ul>
 
-<head>
-</head>
-<body>
-{% block body %}
-    <h2>Home</h2>
-    <div>
-        <ul>
-            {% for i in range110 %}
-            <li>{{i}}</li>
-            {% endfor %}
-        </ul>
-        {{ pth }}
-
-    </div>
-
+<p>Uploaded files:</p>
+<ul>
+    {% for obj in documents %}
+    <li>
+        <a href="{{ obj.multicell_dapi.url }}">{{ obj.multicell_dapi.name }}</a>
+        <small>(Uploaded at: {{ obj.uploaded_at }})</small>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
-
-</body>
-
-</html>

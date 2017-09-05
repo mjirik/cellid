@@ -6,7 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 # from .imageprocessing import handle_uploaded_file
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from .forms import DocumentForm
+from .forms import ImageQuatroForm
+from .models import ImageQuatro
 
 import os.path as op
 # Create your views here.
@@ -23,7 +24,7 @@ def index(request):
     return render(request, 'imviewer/index.html', context)
 
 @login_required()
-def home(request):
+def not_home_anymore(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     fn = op.abspath(__file__)
     print(fn)
@@ -54,12 +55,19 @@ def register(request):
 
 def model_form_upload(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST, request.FILES)
+        form = ImageQuatroForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('imviewer/home/')
     else:
-        form = DocumentForm()
+        form = ImageQuatroForm()
     return render(request, 'imviewer/model_form_upload.html', {
         'form': form
     })
+
+def home(request):
+    documents = ImageQuatro.objects.all()
+    print("home page render")
+    print(dir(documents))
+    return render(request, 'imviewer/home.html', {'documents': documents})
+    pass

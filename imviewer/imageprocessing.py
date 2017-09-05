@@ -15,14 +15,24 @@ import scipy.misc as scm
 from scipy import ndimage
 
 import io3d
-import imtools
-import imtools.qmisc
+#import imtools
+#import imtools.qmisc
 import cv2 as cv
 
 def handle_uploaded_file(files):
     pass
 
 
+p1 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\sw620_stack1_w1sc-DAPI_s3.stk.tif"
+p2 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\sw620_stack1_w2sc-FITC_s3.stk.tif"
+p3 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\k_nalezeni\\91_w1sc-DAPI.stk.tif"
+p4 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\k_nalezeni\\91_w2sc-FITC.stk.tif"
+p5 = "C:\\Users\\Jan\\Desktop\\bunkoteckyVystup_3_9"
+#p1 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\sw620_stack1_w1sc-DAPI_s3.stk.tif"
+#p2 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\sw620_stack1_w2sc-FITC_s3.stk.tif"
+#p3 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\k_nalezeni\\71_w1sc-DAPI.stk.tif"
+#p4 = "C:\\Users\\Jan\\Desktop\\bunkotecky\\k_nalezeni\\71_w2sc-FITC.stk.tif"
+#p5 = "C:\\Users\\Jan\\Desktop\\bunkoteckyVystup_sw620_stack1_s3_7"
 def quatrofile_processing(p1, p2, p3, p4, p5):
     outPath = p5
     makeDirTree(outPath)
