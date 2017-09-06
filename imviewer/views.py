@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import ImageQuatroForm
-from .models import ImageQuatro
+from .models import ImageQuatro, CellImage
 from django.http import Http404
 
 import os.path as op
@@ -88,6 +88,10 @@ class ImageQuatroDetailView(generic.DetailView):
         import glob
         filelist = glob.glob(datadir + "/serazeno/*.png")
         filelist.sort()
+        imagequatro = super(ImageQuatroDetailView, self).get_object()
+        imagequatro.imagequatro_preview=filelist[0]
+        imagequatro.save()
+
         context["cellimages"] = filelist
 
         return context
@@ -112,13 +116,21 @@ def ImageQuatroProcessView(request, pk):
 
     print("imagqquatra processing, pk=" + str(pk))
     from . import imageprocessing
-    imageprocessing.quatrofile_processing(
-        multicell_fitc=iq.multicell_fitc.path,
-        multicell_dapi=iq.multicell_dapi.path,
-        singlecell_fitc=iq.singlecell_fitc.path,
-        singlecell_dapi=iq.singlecell_dapi.path,
-        outputpath=iq.outputdir
-    )
+    # imageprocessing.quatrofile_processing(
+    #     multicell_fitc=iq.multicell_fitc.path,
+    #     multicell_dapi=iq.multicell_dapi.path,
+    #     singlecell_fitc=iq.singlecell_fitc.path,
+    #     singlecell_dapi=iq.singlecell_dapi.path,
+    #     outputpath=iq.outputdir
+    # )
+
+    import glob
+    filelist = glob.glob(op.join(iq.outputdir , "serazeno/*.png"))
+    filelist.sort()
+    for i, fl in enumerate(filelist):
+        cellim = CellImage(image=fl, imagequatro=iq, penalty=float(i))
+        cellim.save()
+
     return render(
         request,
         'imviewer/imagequatro_process.html',

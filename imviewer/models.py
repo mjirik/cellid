@@ -53,6 +53,7 @@ class ImageQuatro(models.Model):
     singlecell_fitc = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     outputdir = models.CharField(max_length=255, blank=True, default=get_output_dir)
+    image_preview = models.ImageField(upload_to="quatroimage_preview/", blank=True)
     # outputdir2  = models.FilePathField(path="/home/mjirik/", default="/home/mjirik/", recursive=True, allow_folders=True)
     # print(outputdir.path)
     # print(outputdir.default)
@@ -72,4 +73,10 @@ class ImageQuatro(models.Model):
     # def get_absolute_url(self):
     #     from django.urls import reverse
     #     return reverse('people.views.details', args=[str(self.id)])
-    
+
+class CellImage(models.Model):
+    imagequatro = models.ForeignKey('ImageQuatro', on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to="cellimage/", blank=True)
+    penalty = models.FloatField()
+
+
