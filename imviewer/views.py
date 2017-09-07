@@ -9,6 +9,9 @@ from django.shortcuts import render
 from .forms import ImageQuatroForm
 from .models import ImageQuatro, CellImage
 from django.http import Http404
+import glob
+from django.core.files import File
+from django.conf import settings
 
 import os.path as op
 # Create your views here.
@@ -116,20 +119,29 @@ def ImageQuatroProcessView(request, pk):
 
     print("imagqquatra processing, pk=" + str(pk))
     from . import imageprocessing
-    # imageprocessing.quatrofile_processing(
-    #     multicell_fitc=iq.multicell_fitc.path,
-    #     multicell_dapi=iq.multicell_dapi.path,
-    #     singlecell_fitc=iq.singlecell_fitc.path,
-    #     singlecell_dapi=iq.singlecell_dapi.path,
-    #     outputpath=iq.outputdir
-    # )
+    order2id = imageprocessing.quatrofile_processing(
+        multicell_fitc=iq.multicell_fitc.path,
+        multicell_dapi=iq.multicell_dapi.path,
+        singlecell_fitc=iq.singlecell_fitc.path,
+        singlecell_dapi=iq.singlecell_dapi.path,
+        outputpath=iq.outputdir
+    )
 
-    import glob
     filelist = glob.glob(op.join(iq.outputdir , "serazeno/*.png"))
     filelist.sort()
     for i, fl in enumerate(filelist):
-        cellim = CellImage(image=fl, imagequatro=iq, penalty=float(i))
+        cellim = CellImage(imagequatro=iq, penalty=float(i))
+        # cellim.image = fl
+        flrel = op.relpath(fl, settings.MEDIA_ROOT)
+        cellim.image = flrel
+        cellim.multicelloverview_id = order2id[i]
         cellim.save()
+
+    mco = op.relpath(op.join(iq.outputdir, "Popisky.png"), settings.MEDIA_ROOT)
+    sco = op.relpath(op.join(iq.outputdir, "hledana.png"), settings.MEDIA_ROOT)
+    iq.multicell_overview = mco
+    iq.singlecell_overview = sco
+    iq.save()
 
     return render(
         request,

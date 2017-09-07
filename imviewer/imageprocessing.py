@@ -79,8 +79,13 @@ def quatrofile_processing(multicell_dapi, multicell_fitc, singlecell_dapi, singl
     bIsRound = (bCharasteristics[0] < 1.3) and (bCharasteristics[1] < 2000)
     orderedObjects = orderBasedOnCharacteristics(allSplitFusionList, allObjectsCharacteristicsTable, bCharasteristics,
                                                  bIsRound, allNumObjects)
+
+    order2id = {}
     for i in range(0, allNumObjects):
         scm.imsave(op.join(outPath, 'serazeno',  str(i) + '_' + str(orderedObjects[i, 1]) + '.png'), orderedObjects[i, 0])
+        order2id[i] = orderedObjects[i, 1]
+
+    return order2id
 
 
 def makeDirTree(path):

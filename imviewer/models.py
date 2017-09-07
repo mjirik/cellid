@@ -36,8 +36,10 @@ post_save.connect(create_profile, sender=User)
 def get_output_dir():
 # 
     import datetime
-    OUTPUT_DIRECTORY_PATH = "~/cellid_data"
+    from django.conf import settings
     import os.path as op
+    OUTPUT_DIRECTORY_PATH = "~/cellid_data"
+    OUTPUT_DIRECTORY_PATH = settings.MEDIA_ROOT
     filename = op.join(op.expanduser(OUTPUT_DIRECTORY_PATH), datetime.datetime.now().strftime("%Y%m%d-%H%M%S.%f"))
 #     print ("getnow")
 #     print (filename)
@@ -54,6 +56,8 @@ class ImageQuatro(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     outputdir = models.CharField(max_length=255, blank=True, default=get_output_dir)
     image_preview = models.ImageField(upload_to="quatroimage_preview/", blank=True)
+    singlecell_overview = models.ImageField(blank=True)
+    multicell_overview = models.ImageField(blank=True)
     # outputdir2  = models.FilePathField(path="/home/mjirik/", default="/home/mjirik/", recursive=True, allow_folders=True)
     # print(outputdir.path)
     # print(outputdir.default)
@@ -78,5 +82,5 @@ class CellImage(models.Model):
     imagequatro = models.ForeignKey('ImageQuatro', on_delete=models.SET_NULL, null=True)
     image = models.ImageField(upload_to="cellimage/", blank=True)
     penalty = models.FloatField()
-
+    multicelloverview_id = models.IntegerField(blank=True, default=0)
 
